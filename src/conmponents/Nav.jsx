@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ProductState } from "../context/Context";
 import { IoTrashSharp } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 const Nav = () => {
   const [toggle, setToggle] = useState(false);
@@ -45,31 +46,45 @@ const Nav = () => {
             <div className="flex flex-col gap-2 py-4 min-w-[150px]">
               {cart?.length > 0 ? (
                 cart?.map((itm) => (
-                  <div
-                    key={itm.id}
-                    className=" border border-zinc-500 w-full px-4 py-2 hover:bg-slate-700"
-                  >
-                    <div className="flex justify-between gap-4">
-                      <div>
-                        <p className="text-xs">{itm?.name} </p>
-                        <h4 className="text-xs">${itm?.price}</h4>
+                  <>
+                    <div
+                      key={itm.id}
+                      className=" border border-zinc-500 w-full px-4 py-2 hover:bg-slate-700"
+                    >
+                      <div className="flex justify-between gap-4">
+                        <div>
+                          <p className="text-xs">{itm?.name} </p>
+                          <h4 className="text-xs">${itm?.price}</h4>
+                        </div>
+                        <button
+                          onClick={() => {
+                            dispatch({
+                              type: "REMOVE_FROM_CART",
+                              payload: itm,
+                            });
+                          }}
+                        >
+                          <IoTrashSharp className="text-red-500 text-xl" />
+                        </button>
                       </div>
-                      <button
-                        onClick={() => {
-                          dispatch({
-                            type: "REMOVE_FROM_CART",
-                            payload: itm,
-                          });
-                        }}
-                      >
-                        <IoTrashSharp className="text-red-500 text-xl" />
-                      </button>
                     </div>
-                  </div>
+                  </>
                 ))
               ) : (
                 <div className="text-center">cart is empty</div>
               )}
+            </div>
+            <div
+              className={`${
+                cart?.length > 0 ? "flex justify-center mt-3" : "hidden"
+              }`}
+            >
+              <Link
+                to={"/carts"}
+                className=" border border-zinc-500 w-fit px-4 py-2 hover:bg-slate-800 text-center bg-zinc-900 text-xs transition-all duration-300"
+              >
+                Go to Cart
+              </Link>
             </div>
           </li>
         )}
